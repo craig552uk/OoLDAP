@@ -1,7 +1,13 @@
---- OoLDAP - An Object Oriented LDAP Library for PHP ---
+/**
+*   Object Oriented LDAP
+*
+*   @package OoLDAP
+*   @author Craig Russell <craig@craig-russell.co.uk>
+*   @copyright (c) 2010 Craig Russell
+*   @license xxx
+*   @version 0.1
+*   @link http://www.craig-russell.co.uk
+*/
 
-Author: Craig Russell
-Contact: craig@craig-russell.co.uk
-Project Started: 10 November 2010
 
 
