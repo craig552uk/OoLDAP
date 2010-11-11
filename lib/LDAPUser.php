@@ -14,30 +14,46 @@
 *   LDAP User Object
 *   
 *   Allows manuipulation of LDAP user objects in Oo style-ee
+*
+*   Example of a custom LDAP object class by extending the LDAPObject class
+*   Follow the numbered steps
 */
 
+// [1] Must include LDAPObject class
 include_once('LDAPObject.php');
 
+// [2] Define new class extending LDAPObject
 class LDAPUser extends LDAPObject {
 
+    // [3] Define constructor method
+    //     Must accept an LDAPService object as parameter
     function __construct($ldapservice)
     {
-        // Schema Definition
-        // Maps human readable names to LDAP attribute names
-        // No need to specify DN here, it is automatically included by LDAPObject
+        // [4] Define schema for custom object type
+        //     Maps human readable names to LDAP attribute names
+        //     Only defined attributes are accessible through the LDAPObject class
+        //     No need to specify DN here, it is automatically included by LDAPObject
         $schema['userName']     ='uid';
         $schema['firstName']    ='givenName';
         $schema['lastName']     ='sn';
         $schema['location']     ='l';
         $schema['entitlements'] ='entitlements';
 
-        // Set the schema of this object
+        // [5] Set the schema of this object
         $this->setSchema($schema);
 
-        // Set the Directory Service of this object
+        // [6] Set the LDAPService of this object
         $this->setLDAPService($ldapservice);
     }
-
+    
+    // [7] That's it!
+    
+    //     You can define additonal methods for your class here if you wish
+    public function getFullName()
+    {
+        // Get Full Name
+        return $this->firstName.' '.$this->lastName;
+    }
 }
 
 ?>
