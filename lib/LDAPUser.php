@@ -29,7 +29,7 @@ class LDAPUser extends LDAPObject {
         $schema['firstName']    ='givenName';
         $schema['lastName']     ='sn';
         $schema['location']     ='l';
-        $schema['entitlements'] ='dmu_entitelments';
+        $schema['entitlements'] ='entitelments';
 
         // Set the schema of this object
         $this->setSchema($schema);
