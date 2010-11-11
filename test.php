@@ -20,6 +20,6 @@ echo "<p>userName: ".$b->userName."</p>";
 echo "<p>firstName: ".$b->firstName."</p>";
 echo "<p>lastName: ".$b->lastName."</p>";
 echo "<p>location: ".$b->location."</p>";
-echo "<p>entitelments: "; foreach ($b->entitlements as $value) { echo $value." "; } echo "</p>";
+echo "<p>entitlements: "; foreach ($b->entitlements as $value) { echo $value." "; } echo "</p>";
 
 ?>
