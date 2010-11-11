@@ -5,7 +5,7 @@
 *   @package OoLDAP
 *   @author Craig Russell
 *   @copyright (c) 2010 Craig Russell
-*   @license xxx
+*   @license MIT License http://www.opensource.org/licenses/mit-license.html
 *   @version 0.1
 *   @link http://www.craig-russell.co.uk
 */
