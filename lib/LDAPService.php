@@ -25,7 +25,7 @@ class LDAPService {
     *   ldap_bindpass    Password of bind user
     *   ldap_bindbase    Restrict activity to subtree of this container
     */
-    const ldap_server        = 'x.x.x.x';
+    const ldap_server        = 'ldap.openldap.org';
     const ldap_binduser      = 'cn=admin,o=org';
     const ldap_bindpass      = 'passw0rd';
     const ldap_bindbase      = 'ou=people,o=org';
@@ -43,6 +43,14 @@ class LDAPService {
     public function __construct()
     {
     	// Connect to LDAP server
+    	//NOTE Temporarily disabled bind function
+    	//$_conn = ldap_connect('ldap_server') or die('Could not connect to ldap server');
+    	
+    	// If connection established
+        if ($_conn) {
+            // Bind to LDAP Server
+            $ldapbind = ldap_bind($_conn, 'ldap_binduser', 'ldap_bindpass') or die('Could not bind to ldap server');
+        }
     }
 
     /**
@@ -52,6 +60,7 @@ class LDAPService {
 	public function __destruct()
     {
         // Disconnect from LDAP Server
+        ldap_unbind($_conn);
     }
 
     /**
@@ -60,9 +69,11 @@ class LDAPService {
     *   @param  string   $search
     *   @return array
     */
-    public function search($search)
+    public function search($search, $attributes = array())
     {
-        return $search;
+        // TODO Perform search
+        // TODO Restructure search results in to nested array
+        return array();
     }
 
     /**
@@ -75,18 +86,39 @@ class LDAPService {
     */
     public function save($data)
     {
+        // TODO Build LDIF data structure from $data
+        // NOTE Delete empty valued attributes
+        // NOTE Only modify attributes specified in $data
+        // TODO Apply LDIF to LDAP Directory
         return true;
     }
-    
+   
+    /**
+    *   Delete object(s) in $data to LDAP directory if it exists
+    *   
+    *   @param  array   $data
+    *   @return bool
+    */
+    public function delete($data)
+    {
+        // TODO Extract DN from $data
+        // TODO Delete object from LDAP server if it exists
+        return true;
+    }
+     
     /**
     *   Attempt to authenticate against LDAP server
+    *   Authentication will be tried against all accounts with $username
     *   
     *   @param  string   $username
     *   @param  string   $password
+    *   @param  string   $username_attribute
     *   @return bool
     */
-    public function authenticate($username, $password)
+    public function authenticate($username, $password, $username_attribute='uid')
     {
+        // TODO Search for DN of $username
+        // TODO Attempt authentication with DN and $password for each result
         return true;
     }
     
