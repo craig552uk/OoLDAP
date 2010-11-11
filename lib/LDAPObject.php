@@ -14,7 +14,8 @@
 *   Main LDAPObject Class
 *
 *   Core methods for manipulating PHP Objects.
-*   Classes that extend this class must do so correctly, please see the documentation.
+*   Classes that extend this class must do so correctly,
+*   please see the example class LDAPUser for correct implementation
 *
 */
 
@@ -69,6 +70,8 @@ class LDAPObject {
         if (array_key_exists($this->_schema[$name], $this->_data)) {
             return $this->_data[$this->_schema[$name]];
         }
+        
+        LDAPObject::__get($name);
     }
 
     /**
