@@ -5,6 +5,10 @@ include_once('lib/LDAPUser.php');
 
 $ldapds = new LDAPService();
 
+echo "<p>Authenticate: john passw0rd = ";
+echo ($ldapds->authenticate("john","passw0rd")) ? "TRUE" : "FALSE";
+echo "</p>";
+
 echo "<pre>";
 print_r($ldapds->search("uid=john", array('uid','sn','givenname')));
 echo "</pre>";
