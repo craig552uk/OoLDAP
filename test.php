@@ -4,6 +4,12 @@ include_once('lib/LDAPService.php');
 include_once('lib/LDAPUser.php');
 
 $ldapds = new LDAPService();
+
+echo "<pre>";
+print_r($ldapds->search("uid=john"));
+echo "</pre>";
+
+/*
 $b = new LDAPUser($ldapds);
 
 $b->userName  = 'user100';
@@ -22,5 +28,7 @@ echo "<p>lastName: ".$b->lastName."</p>";
 echo "<p>location: ".$b->location."</p>";
 echo "<p>fullName: ".$b->getFullName()."</p>";
 echo "<p>entitlements: "; foreach ($b->entitlements as $value) { echo $value." "; } echo "</p>";
+*/
+
 
 ?>

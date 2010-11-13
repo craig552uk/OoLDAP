@@ -70,11 +70,56 @@ class LDAPService {
     *   @param  string   $search
     *   @return array
     */
-    public function search($search, $attributes = array())
+    public function search($search, $attributes = array('*'))
     {
-        // TODO Perform search
-        // TODO Restructure search results in to nested array
-        return array();
+        // Perform search
+        $result = ldap_search($this->_conn, $this->ldap_bindbase, $search, $attributes);
+        
+        // Return false or Cleaned Result
+        if (!$result)   return false;
+        else            return $this->cleanResult($result);
+    }
+    
+    /**
+    *   Restructure LDAP search result to smaller array
+    *   
+    *   @param  LDAP search result   $result
+    *   @return                      array
+    */
+    private function cleanResult($result)
+    {
+        $return = array();
+        foreach(ldap_get_entries($this->_conn, $result) as $obj_k => $obj_v)    // Itterate Objects
+        {
+            if($obj_k !== 'count')
+            {
+                $return[$obj_k] = array();
+                foreach($obj_v as $att_k => $att_v)                             // Itterate Attributes
+                {
+                    if(is_string($att_k) && $att_k !== 'count')                 
+                    {
+                        if(!is_array($att_v))
+                        {
+                            $return[$obj_k][$att_k] = $att_v;                   // Set non-array values
+                        }else{
+                            if($att_v['count'] == 1)
+                            {
+                                $return[$obj_k][$att_k] = $att_v[0];            // Set single-value
+                            }else{
+                                foreach($att_v as $val_v => $val_k)             // Itterate Multi-Values
+                                {
+                                    if($val_v !== 'count')
+                                    {
+                                        $return[$obj_k][$att_k][] = $val_k;     // Nest multi-values
+                                     }
+                                }
+                            }
+                        }
+                    }
+                }   
+            }
+        }
+        return $return;
     }
 
     /**
