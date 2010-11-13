@@ -6,7 +6,7 @@ include_once('lib/LDAPUser.php');
 $ldapds = new LDAPService();
 
 echo "<pre>";
-print_r($ldapds->search("uid=john"));
+print_r($ldapds->search("uid=john", array('uid','sn','givenname')));
 echo "</pre>";
 
 /*

@@ -42,8 +42,8 @@ class LDAPService {
     */
     public function __construct()
     {
+        // TODO Add server configuration method parameters
     	// Connect to LDAP server
-    	//NOTE Temporarily disabled bind function
     	$this->_conn = ldap_connect($this->ldap_server) or die('Could not connect to ldap server');
     	ldap_set_option($this->_conn, LDAP_OPT_PROTOCOL_VERSION, 3);
     	
@@ -66,8 +66,11 @@ class LDAPService {
 
     /**
     *   Search LDAP directory with $search
+    *   Return cleaned result containing $attributes
+    *   Specified attributes must be LDAP attributes
     *   
-    *   @param  string   $search
+    *   @param  string      $search
+    *   @param  array       $attributes 
     *   @return array
     */
     public function search($search, $attributes = array('*'))

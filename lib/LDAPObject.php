@@ -114,6 +114,20 @@ class LDAPObject {
     {
         return $this->_ldap_service->save($this->_data);
     }
+    
+    /**
+    *   Save $_data to an object on $_ldap_service
+    *   
+    *   @param  string  LDAP Search String
+    *   @return boolean
+    */
+    public function search($search, $attributes=array('*'))
+    {
+        // TODO Use LDAPService search
+        // TODO Map $attributes with object schema
+        // TODO Restrict results to attributes in object schema
+        return array;
+    }
 
 }
 ?>
