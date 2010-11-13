@@ -25,10 +25,10 @@ class LDAPService {
     *   ldap_bindpass    Password of bind user
     *   ldap_bindbase    Restrict activity to subtree of this container
     */
-    const ldap_server        = 'ldap.openldap.org';
-    const ldap_binduser      = 'cn=admin,o=org';
-    const ldap_bindpass      = 'passw0rd';
-    const ldap_bindbase      = 'ou=people,o=org';
+    private $ldap_server        = 'localhost';
+    private $ldap_binduser      = 'cn=admin,dc=example,dc=com';
+    private $ldap_bindpass      = 'secret';
+    private $ldap_bindbase      = 'ou=people,dc=example,dc=com';
 
     /*
     *   DO NOT MAKE ANY CHANGES BELOW THIS LINE
@@ -44,12 +44,13 @@ class LDAPService {
     {
     	// Connect to LDAP server
     	//NOTE Temporarily disabled bind function
-    	//$_conn = ldap_connect('ldap_server') or die('Could not connect to ldap server');
+    	$this->_conn = ldap_connect($this->ldap_server) or die('Could not connect to ldap server');
+    	ldap_set_option($this->_conn, LDAP_OPT_PROTOCOL_VERSION, 3);
     	
     	// If connection established
-        if ($_conn) {
+        if ($this->_conn) {
             // Bind to LDAP Server
-            $ldapbind = ldap_bind($_conn, 'ldap_binduser', 'ldap_bindpass') or die('Could not bind to ldap server');
+            $ldapbind = ldap_bind($this->_conn, $this->ldap_binduser, $this->ldap_bindpass) or die('Could not bind to ldap server');
         }
     }
 
@@ -60,7 +61,7 @@ class LDAPService {
 	public function __destruct()
     {
         // Disconnect from LDAP Server
-        ldap_unbind($_conn);
+        ldap_unbind($this->_conn);
     }
 
     /**
