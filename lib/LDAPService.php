@@ -14,6 +14,16 @@
 *   LDAP Service
 *
 *   Allows direct interaction with LDAP service.
+*
+*   public __construct()
+*   public __destruct()
+*   public search()
+*   public save()
+*   public delete()
+*   public authenticate()
+*   private connect()
+*   private cleanResult()
+*
 */
 class LDAPService {
 
@@ -30,10 +40,6 @@ class LDAPService {
     private $ldap_bindpass      = 'secret';
     private $ldap_bindbase      = 'ou=people,dc=example,dc=com';
    
-
-    /***************************************************************************
-    *   DO NOT MAKE ANY CHANGES BELOW THIS LINE
-    ***************************************************************************/
     private $_conn; // Connection string
 
     /***************************************************************************
@@ -66,17 +72,17 @@ class LDAPService {
     *   Specified attributes must be LDAP attributes
     *   
     *   @param  string      $search
-    *   @param  array       $attributes 
+    *   @param  array       $schema 
     *   @return array
     */
-    public function search($search, $attributes = array('*'))
+    public function search($search, $schema = array('DN'=>'dn'))
     {
         // Perform search
-        $result = ldap_search($this->_conn, $this->ldap_bindbase, $search, $attributes);
+        $result = ldap_search($this->_conn, $this->ldap_bindbase, $search, array_values($schema));
         
         // Return false or Cleaned Result
         if (!$result)   return false;
-        else            return $this->cleanResult($result);
+        else            return $this->cleanResult($result, $schema);
     }
 
     /**
@@ -125,13 +131,13 @@ class LDAPService {
         if ($auth_conn)
         {
             // Search for DN of $username
-            $result = $this->search("$username_attribute=$username", array('dn'));
+            $result = $this->search("$username_attribute=$username");
         
             // For each matching user, attempt authentication
             foreach($result as $user)
             {
                 // If bind successful
-                if(ldap_bind($auth_conn, $user['dn'], $password))
+                if(ldap_bind($auth_conn, $user['DN'], $password))
                 {
                     // Disconnect and return true
                     ldap_unbind($auth_conn);
@@ -181,7 +187,7 @@ class LDAPService {
     *   @param  LDAP search result   $result
     *   @return                      array
     */
-    private function cleanResult($result)
+    private function cleanResult($result, $schema=array('DN'=>'dn'))
     {
         $return = array();
         foreach(ldap_get_entries($this->_conn, $result) as $obj_k => $obj_v)    // Itterate Objects
@@ -193,19 +199,20 @@ class LDAPService {
                 {
                     if(is_string($att_k) && $att_k !== 'count')                 
                     {
+                        $hkey = array_search($att_k, $schema);                  // Get human readable attribute name
                         if(!is_array($att_v))
                         {
-                            $return[$obj_k][$att_k] = $att_v;                   // Set non-array values
+                            $return[$obj_k][$hkey] = $att_v;                   // Set non-array values
                         }else{
                             if($att_v['count'] == 1)
                             {
-                                $return[$obj_k][$att_k] = $att_v[0];            // Set single-value
+                                $return[$obj_k][$hkey] = $att_v[0];              // Set single-value
                             }else{
                                 foreach($att_v as $val_v => $val_k)             // Itterate Multi-Values
                                 {
                                     if($val_v !== 'count')
                                     {
-                                        $return[$obj_k][$att_k][] = $val_k;     // Nest multi-values
+                                        $return[$obj_k][$hkey][] = $val_k;     // Nest multi-values
                                      }
                                 }
                             }

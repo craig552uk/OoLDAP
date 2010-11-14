@@ -4,18 +4,18 @@ include_once('lib/LDAPService.php');
 include_once('lib/LDAPUser.php');
 
 $ldapds = new LDAPService();
+$b = new LDAPUser($ldapds);
 
 echo "<p>Authenticate: john passw0rd = ";
 echo ($ldapds->authenticate("john","passw0rd")) ? "TRUE" : "FALSE";
 echo "</p>";
 
 echo "<pre>";
-print_r($ldapds->search("uid=john", array('uid','sn','givenname')));
+print_r($ldapds->search("uid=*", $b->getSchema()));
 echo "</pre>";
 
-/*
-$b = new LDAPUser($ldapds);
 
+/*
 $b->userName  = 'user100';
 $b->DN        = 'cn=user100,ou=people,o=org';     // DN must be set for all new objects
 $b->firstName = 'Indiana';

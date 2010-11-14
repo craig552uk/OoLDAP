@@ -17,6 +17,16 @@
 *   Classes that extend this class must do so correctly,
 *   please see the example class LDAPUser for correct implementation
 *
+*   public setSchema()
+*   public getSchema()
+*   public setLDAPService()
+*   public setData()
+*   public __get()
+*   public __set()
+*   public dump()
+*   public save()
+*   public search()
+*
 */
 
 class LDAPObject {
@@ -35,6 +45,16 @@ class LDAPObject {
     {
         $this->_schema       = $schema;
         $this->_schema['DN'] ='dn';         // Defined for all object types
+    }
+
+    /**
+    *   Get the schema for the object
+    *   
+    *   @return array
+    */
+    public function getSchema()
+    {
+        return $this->_schema;
     }
 
     /**

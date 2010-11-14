@@ -33,11 +33,20 @@ class LDAPUser extends LDAPObject {
         //     Maps human readable names to LDAP attribute names
         //     Only defined attributes are accessible through the LDAPObject class
         //     No need to specify DN here, it is automatically included by LDAPObject
-        $schema['userName']     ='uid';
-        $schema['firstName']    ='givenName';
-        $schema['lastName']     ='sn';
-        $schema['location']     ='l';
-        $schema['entitlements'] ='entitlements';
+        $schema['username']     = 'uid';
+        $schema['firstName']    = 'givenname';
+        $schema['lastName']     = 'sn';
+        $schema['fullName']     = 'displayname';
+        $schema['shell']        = 'loginshell';
+        $schema['home']         = 'homedirectory';
+        $schema['email']        = 'mail';
+        $schema['postCode']     = 'postalcode';
+        $schema['location']     = 'l';
+        $schema['mobilePhone']  = 'mobile';
+        $schema['homePhone']    = 'homephone';
+        $schema['jobTitle']     = 'title';
+        $schema['address']      = 'postaladdress';
+        $schema['initials']     = 'initials';
 
         // [5] Set the schema of this object
         $this->setSchema($schema);
