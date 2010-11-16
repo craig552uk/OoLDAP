@@ -58,10 +58,10 @@ class LDAPUser extends LDAPObject {
     // [7] That's it!
     
     //     You can define additonal methods for your class here if you wish
-    public function getFullName()
+    public function getPostalAddress()
     {
         // Get Full Name
-        return $this->firstName.' '.$this->lastName;
+        return $this->address.' '.$this->location.' '.$this->postCode;
     }
 }
 
